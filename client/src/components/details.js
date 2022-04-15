@@ -10,8 +10,7 @@ function Details({ shouldRefresh }) {
     const getData = async () => {
       try {
         const list = await axios.get("/apiRoutes");
-        setListofUserData(list.data);
-        console.log(list);
+        setListofUserData(list.data.reverse());
       } catch (error) {
         console.log(error);
       }
@@ -19,7 +18,7 @@ function Details({ shouldRefresh }) {
     getData();
   }, [shouldRefresh]);
 
-  if (listofUserData) {
+  if (listofUserData && listofUserData.length > 0) {
     return (
       <Container>
         <Table>
@@ -35,7 +34,8 @@ function Details({ shouldRefresh }) {
           <tbody>
             {listofUserData &&
               listofUserData.map((e) => {
-                let filedownload = `http://localhost:3000/${e.docFile.replaceAll(
+                //absolute path given to open file from the browser
+                let filedownload = `http://localhost:4000/${e.docFile.replaceAll(
                   " ",
                   "%20"
                 )}`;
@@ -55,6 +55,12 @@ function Details({ shouldRefresh }) {
               })}
           </tbody>
         </Table>
+      </Container>
+    );
+  } else {
+    return (
+      <Container>
+        <p>No data found</p>
       </Container>
     );
   }

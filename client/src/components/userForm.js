@@ -51,34 +51,55 @@ function UserForm({ setRefresh }) {
         formdata.append("fileUpload", fileObject.fileUpload[0]);
 
         const result = await axios.post("/apiroutes/upload", formdata, config);
+
         firstName.value = "";
         lastName.value = "";
         email.value = "";
         university.value = "";
         fileUpload.value = "";
+        setForm({});
+
         setRefresh(true);
+        alert("Record Inserted Successfully");
       } catch (error) {
-        console.log(error);
+        alert("Error while inserting data");
       }
     }
   };
 
   //error checking fields(validation checks)
   const findFormErrors = () => {
-    const { firstName, lastName, email, university, fileUpload } = form;
+    let { firstName, lastName, email, university, file } = form;
     const newErrors = {};
+    const emailPattern = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 
     if (!firstName) newErrors.firstName = "cannot be blank!";
+    if (firstName && firstName.trim().length === 0)
+      newErrors.firstName = "cannot contain only blank spaces";
+
     if (!lastName) newErrors.lastName = "cannot be blank!";
+    if (lastName && lastName.trim().length === 0)
+      newErrors.lastName = "cannot contain only blank spaces";
+
     if (!email) newErrors.email = "cannot be blank!";
+    if (email && email.trim().length === 0)
+      newErrors.email = "cannot contain only blank spaces";
+
+    if (!emailPattern.test(email))
+      newErrors.email = "please enter a valid email";
+
     if (!university) newErrors.university = "cannot be blank!";
+    if (university && university.trim().length === 0)
+      newErrors.university = "cannot contain only blank spaces";
 
-    if (fileUpload) {
-      //   if (file.trim().length === 0)
-      //     newErrors.file = "Description cannot be blank spaces!";
-      console.log(fileUpload);
+    if (!file) newErrors.fileUpload = "cannot be blank!";
+    if (file) {
+      const fileTypes = /png|jpeg|jpg|pdf|docx|doc|txt/;
+      if (!fileTypes.test(file)) {
+        newErrors.fileUpload =
+          "extensions allowed - png | jpeg | jpg | pdf | docx | doc | txt";
+      }
     }
-
     return newErrors;
   };
 
@@ -102,8 +123,11 @@ function UserForm({ setRefresh }) {
               placeholder="First Name"
               autoFocus={true}
               onChange={(e) => setField("firstName", e.target.value)}
+              isInvalid={!!errors.firstName}
             />
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.firstName}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="3" controlId="lastName">
             <Form.Label>Last name</Form.Label>
@@ -115,9 +139,12 @@ function UserForm({ setRefresh }) {
               name="lastName"
               placeholder="Last Name"
               onChange={(e) => setField("lastName", e.target.value)}
+              isInvalid={!!errors.lastName}
             />
 
-            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.lastName}
+            </Form.Control.Feedback>
           </Form.Group>
         </Row>
         <Row className="mb-3 justify-content-center">
@@ -136,7 +163,11 @@ function UserForm({ setRefresh }) {
               name="email"
               placeholder="Enter Email"
               onChange={(e) => setField("email", e.target.value)}
+              isInvalid={!!errors.email}
             />
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group as={Col} md="3" controlId="university">
             <Form.Label>University</Form.Label>
@@ -148,10 +179,11 @@ function UserForm({ setRefresh }) {
               placeholder="University"
               name="university"
               onChange={(e) => setField("university", e.target.value)}
+              isInvalid={!!errors.university}
             />
 
             <Form.Control.Feedback type="invalid">
-              {errors.city}
+              {errors.university}
             </Form.Control.Feedback>
           </Form.Group>
         </Row>

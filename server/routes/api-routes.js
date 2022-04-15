@@ -86,8 +86,9 @@ router.post("/upload", upload.single("fileUpload"), async (req, res) => {
     });
     return;
   }
+
   try {
-    //validations.validate(name, email, university);
+    validations.validate(firstName, lastName, email, university);
 
     let docFile = req.file.path.split("\\").join("/");
 

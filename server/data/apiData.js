@@ -18,7 +18,7 @@ async function createUser(firstName, lastName, email, university, docFile) {
   email = email.trim();
   university = university.trim();
 
-  //validations.validateBlog(title, body, userThatPosted);
+  validations.validate(firstName, lastName, email, university);
 
   let userData = {
     firstName,
