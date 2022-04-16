@@ -31,8 +31,7 @@ async function createUser(firstName, lastName, email, university, docFile) {
   const _collection = await userCollection();
   const insertData = await _collection.insertOne(userData);
 
-  if (insertData.insertedCount === 0)
-    throw { code: 500, error: "Could not add new user data" };
+  if (insertData.insertedCount === 0) throw "Could not add new user data";
 
   return `User information Inserted!`;
 }
