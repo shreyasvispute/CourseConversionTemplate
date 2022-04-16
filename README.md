@@ -9,7 +9,9 @@ You need MongoDB and Node.js installed on your computer to get this app running
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, you will find server and client and run the following commands individually to get started:
+
+### `npm install`
 
 ### `npm start`
 
