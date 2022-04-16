@@ -8,7 +8,7 @@ const path = require("path");
 
 //middleware to store the file data
 const storage = multer.diskStorage({
-  destination: "./public/images",
+  destination: "./public/documents",
   filename: function (req, file, callback) {
     const fullName =
       file.originalname.split(".")[0] +
